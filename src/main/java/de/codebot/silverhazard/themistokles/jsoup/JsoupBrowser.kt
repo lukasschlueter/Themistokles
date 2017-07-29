@@ -144,11 +144,13 @@ class JsoupBrowser(initialPage: String, override var minimumTimeout: Int = 1000,
             // Match the whole string
             elements = document.getElementsMatchingOwnText("^$string$")
         } else {
-            elements = document.getElementsContainingOwnText(string)
+            elements = document.getElementsContainingText(string)
         }
 
         if (elements.size == 0)
             elements.addAll(document.select(string))
+
+        elements.removeAll { !it.hasAttr("href") }
         if (elements.size == 0) return false
 
         // "click" element
